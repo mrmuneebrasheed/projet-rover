@@ -20,84 +20,110 @@ for (let i = 0; i < 10; i++) {
 // Defining direction Functions
 
 let turnLeft = (rover) => {
-    rover.direction = "W";
-  },
-  turnRight = (rover) => {
-    rover.direction = "E";
-  },
-  turnUpward = (rover) => {
-    rover.direction = "N";
-  },
-  turnDownward = (rover) => {
-    rover.direction = "S";
-  },
-  // Defining movements Functions
-  moveForward = (rover) => {
-    history.push([rover.x, rover.y]);
-    grid[rover.y][rover.x] = " ";
-    if (rover.direction == "N") {
-      if (rover.y == 0) {
-        {
-          return console.log("The rover is already at the edge");
-        }
-      }
-      rover.y -= 1;
+  switch (rover.direction) {
+    case "N": {
+      rover.direction = "W";
+      break;
     }
-    if (rover.direction == "S") {
-      if (rover.y == 9) {
+    case "W": {
+      rover.direction = "S";
+      break;
+    }
+    case "S": {
+      rover.direction = "E";
+      break;
+    }
+    case "E": {
+      rover.direction = "N";
+      break;
+    }
+  }
+};
+let turnRight = (rover) => {
+  switch (rover.direction) {
+    case "N": {
+      rover.direction = "E";
+      break;
+    }
+    case "E": {
+      rover.direction = "S";
+      break;
+    }
+    case "S": {
+      rover.direction = "W";
+      break;
+    }
+    case "W": {
+      rover.direction = "N";
+      break;
+    }
+  }
+};
+// Defining movements Functions
+let moveForward = (rover) => {
+  history.push([rover.x, rover.y]);
+  grid[rover.y][rover.x] = " ";
+  if (rover.direction === "N") {
+    if (rover.y === 0) {
+      {
         return console.log("The rover is already at the edge");
       }
-      rover.y += 1;
     }
-    if (rover.direction == "E") {
-      if (rover.x == 9) {
-        return console.log("The rover is already at the edge");
-      }
-      rover.x += 1;
+    rover.y -= 1;
+  }
+  if (rover.direction == "S") {
+    if (rover.y == 9) {
+      return console.log("The rover is already at the edge");
     }
-    if (rover.direction == "W") {
-      if (rover.x == 0) {
-        return console.log("The rover is already at the edge");
-      }
-      rover.x -= 1;
+    rover.y += 1;
+  }
+  if (rover.direction == "E") {
+    if (rover.x == 9) {
+      return console.log("The rover is already at the edge");
     }
-  },
-  moveBackward = (rover) => {
-    history.push([rover.x, rover.y]);
-    grid[rover.y][rover.x] = " ";
-    if (rover.direction == "N") {
-      if (rover.y == 9) {
-        return console.log("The rover is already at the edge");
-      }
-      rover.y += 1;
+    rover.x += 1;
+  }
+  if (rover.direction == "W") {
+    if (rover.x == 0) {
+      return console.log("The rover is already at the edge");
     }
-    if (rover.direction == "S") {
-      if (rover.y == 0) {
-        return console.log("The rover is already at the edge");
-      }
-      rover.y -= 1;
+    rover.x -= 1;
+  }
+};
+let moveBackward = (rover) => {
+  history.push([rover.x, rover.y]);
+  grid[rover.y][rover.x] = " ";
+  if (rover.direction == "N") {
+    if (rover.y === grid.length - 1) {
+      return console.log("The rover is already at the edge");
     }
-    if (rover.direction == "E") {
-      if (rover.x == 0) {
-        return console.log("The rover is already at the edge");
-      }
-      rover.x -= 1;
+    rover.y += 1;
+  }
+  if (rover.direction == "S") {
+    if (rover.y === 0) {
+      return console.log("The rover is already at the edge");
     }
-    if (rover.direction == "W") {
-      if (rover.x == 9) {
-        return console.log("The rover is already at the edge");
-      }
-      rover.x += 1;
+    rover.y -= 1;
+  }
+  if (rover.direction == "E") {
+    if (rover.x === 0) {
+      return console.log("The rover is already at the edge");
     }
-  };
+    rover.x -= 1;
+  }
+  if (rover.direction == "W") {
+    if (rover.x === rid.length - 1) {
+      return console.log("The rover is already at the edge");
+    }
+    rover.x += 1;
+  }
+};
 
 // Pilot Function
 function pilotRover(string, rover) {
   for (let i = 0; i < string.length; i++) {
     if (string[i] == "l") turnLeft(rover);
     else if (string[i] == "r") turnRight(rover);
-    else if (string[i] == "u") turnUpward(rover);
-    else if (string[i] == "d") turnDownward(rover);
     else if (string[i] == "f") moveForward(rover);
     else if (string[i] == "b") moveBackward(rover);
     else {
@@ -105,12 +131,17 @@ function pilotRover(string, rover) {
     }
   }
   grid[rover.y][rover.x] = rover.direction;
-  console.log(grid);
+  console.table(grid);
+  // for (let i = 0; i < grid.length; i++) {
+  //   for (let j = 0; j < grid.length; j++) {
+  //     console.log(`| ${grid[j][i]} |`);
+  //   }
+  // }
 }
 
 // Input Commands
 grid[rover.y][rover.x] = rover.direction;
-console.log(grid);
+console.table(grid);
 prompt.get("commands", function (err, res) {
   if (err) console.log(err);
   pilotRover(res.commands, rover);
